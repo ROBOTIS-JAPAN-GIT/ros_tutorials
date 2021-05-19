@@ -1,21 +1,19 @@
-#include "ros/ros.h"                            // ROS Default Header File
-#include "ros_tutorials_parameter/SrvTutorial.h"// action Library Header File
+#include "ros/ros.h"                            // ROSの基本的なヘッダーファイル
+#include "ros_tutorials_parameter/SrvTutorial.h"// SrvTutorial.srvファイルをビルドして自動生成されるヘッダーファイル
 
-#define PLUS            1   // Addition
-#define MINUS           2   // Subtraction
-#define MULTIPLICATION  3   // Multiplication
-#define DIVISION        4   // Division
+#define PLUS            1   // 足し算
+#define MINUS           2   // 引き算
+#define MULTIPLICATION  3   // 掛け算
+#define DIVISION        4   // 割り算
 
 int g_operator = PLUS;
 
-// The process below is performed if there is a service request
-// The service request is declared as 'req', and the service response is declared as 'res'
+// サービス要請はreq引数に、サービス応答はres引数に与えられる
 bool calculation(ros_tutorials_parameter::SrvTutorial::Request &req,
                  ros_tutorials_parameter::SrvTutorial::Response &res)
 {
-  // The operator will be selected according to the parameter value and calculate 'a' and 'b',
-  // which were received upon the service request.
-  // The result is stored as the Response value.
+  // サービス要請を受けた際、得られたa,bの値をパラメーターの値に従い演算する
+  // 演算後、サービス応答のメッセージに値を与える
   switch(g_operator)
   {
     case PLUS:
@@ -37,35 +35,39 @@ bool calculation(ros_tutorials_parameter::SrvTutorial::Request &req,
          res.result = req.a + req.b; break;
   }
 
-  // Displays the values of 'a' and 'b' used in the service request, and the 'result' value
-  // corresponding to the service response.
+  // サービス要請に使用したa,bの値を出力し、サービス応答の際に送信するresultの値を表示する
   ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
   ROS_INFO("sending back response: [%ld]", (long int)res.result);
 
   return true;
 }
 
-int main(int argc, char **argv)             // Node Main Function
+int main(int argc, char **argv)             // ノードのメイン関数
 {
-  ros::init(argc, argv, "service_server");  // Initializes Node Name
-  ros::NodeHandle nh;                       // Node handle declaration
+  ros::init(argc, argv, "service_server");  // ノード名の初期化
+  ros::NodeHandle nh;                       // ROSシステムとの通信を行うためのノードハンドルの宣言
 
   nh.setParam("calculation_method", PLUS);  // Reset Parameter Settings
 
-  // Declare service server 'service_server' using the 'SrvTutorial' service file
-  // in the 'ros_tutorials_service' package. The service name is 'ros_tutorial_srv' and
-  // it is set to execute a 'calculation' function when a service is requested.
+  // サービスサーバーの宣言
+  // サービス名：ros_tutorial_srv
+  // サービスクライアント名：ros_tutorials_service_server
+  // コールバック関数名：calculation
   ros::ServiceServer ros_tutorials_service_server = nh.advertiseService("ros_tutorial_srv", calculation);
 
   ROS_INFO("ready srv server!");
 
-  ros::Rate r(10);  // 10 hz
+  // ループ周期を設定する。ここでは周期を10Hz(0.1秒間隔でのループ)に設定
+  ros::Rate r(10);
 
   while (ros::ok())
   {
-    nh.getParam("calculation_method", g_operator);  // Select the operator according to the value received from the parameter.
-    ros::spinOnce();  // Callback function process routine
-    r.sleep();        // Sleep for routine iteration
+    // 演算子をパラメータにしたがって変更する
+    nh.getParam("calculation_method", g_operator);
+    // コールバック関数を呼び出すための関数
+    ros::spinOnce();
+    // 設定したループ周期に合わせてスリープする
+    r.sleep();
   }
 
   return 0;
