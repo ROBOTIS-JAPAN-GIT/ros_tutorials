@@ -1,36 +1,37 @@
-#include "ros/ros.h"                            // ROS Default Header File
-#include "ros_tutorials_topic/MsgTutorial.h"    // MsgTutorial Message File Header. The header file is automatically created when building the package.
+#include "ros/ros.h"                            // ROSの基本的なヘッダーファイル
+#include "ros_tutorials_topic/MsgTutorial.h"    // MsgTutorial.msgファイルをビルドして自動生成されるヘッダーファイル
 
-int main(int argc, char **argv)                 // Node Main Function
+int main(int argc, char **argv)                 // ノードのメイン関数
 {
-  ros::init(argc, argv, "topic_publisher");     // Initializes Node Name
-  ros::NodeHandle nh;                           // Node handle declaration for communication with ROS system
+  ros::init(argc, argv, "topic_publisher");     // ノード名の初期化
+  ros::NodeHandle nh;                           // ROSシステムとの通信を行うためのノードハンドルの宣言
 
-  // Declare publisher, create publisher 'ros_tutorial_pub' using the 'MsgTutorial'
-  // message file from the 'ros_tutorials_topic' package. The topic name is
-  // 'ros_tutorial_msg' and the size of the publisher queue is set to 100.
+  // パブリッシャーの宣言
+  // トピック名：ros_tutorial_msg
+  // トピック型：ros_tutorials_topic::MsgTutorial
+  // パブリッシャー名：ros_tutorial_pub
+  // パブリッシャーキューサイズ：100
   ros::Publisher ros_tutorial_pub = nh.advertise<ros_tutorials_topic::MsgTutorial>("ros_tutorial_msg", 100);
 
-  // Set the loop period. '10' refers to 10 Hz and the main loop repeats at 0.1 second intervals
+  // ループ周期を設定する。ここでは周期を10Hz(0.1秒間隔でのループ)に設定
   ros::Rate loop_rate(10);
 
-  ros_tutorials_topic::MsgTutorial msg;     // Declares message 'msg' in 'MsgTutorial' message file format
-  int count = 0;                            // Variable to be used in message
-
+  ros_tutorials_topic::MsgTutorial msg;     // メッセージの宣言
+  int count = 0;                            // メッセージで使用する変数の宣言
   while (ros::ok())
   {
-    msg.stamp = ros::Time::now();           // Save current time in the stamp of 'msg'
-    msg.data  = count;                      // Save the the 'count' value in the data of 'msg'
+    msg.stamp = ros::Time::now();           // 現在時刻をmsgのstampに設定する
+    msg.data  = count;                      // countの値をmsgのcountに設定する
 
-    ROS_INFO("send msg = %d", msg.stamp.sec);   // Prints the 'stamp.sec' message
-    ROS_INFO("send msg = %d", msg.stamp.nsec);  // Prints the 'stamp.nsec' message
-    ROS_INFO("send msg = %d", msg.data);        // Prints the 'data' message
+    ROS_INFO("send msg = %d", msg.stamp.sec);   // stamp.secメッセージを表示する
+    ROS_INFO("send msg = %d", msg.stamp.nsec);  // stamp.nsecメッセージを表示する
+    ROS_INFO("send msg = %d", msg.data);        // dataメッセージを表示する
 
-    ros_tutorial_pub.publish(msg);          // Publishes 'msg' message
+    ros_tutorial_pub.publish(msg);          // msgをパブリッシュする
 
-    loop_rate.sleep();                      // Goes to sleep according to the loop rate defined above.
+    loop_rate.sleep();                      // 設定したループ周期に合わせてスリープする
 
-    ++count;                                // Increase count variable by one
+    ++count;                                // countを１づつ加算する
   }
 
   return 0;

@@ -1,29 +1,30 @@
-#include "ros/ros.h"                          // ROS Default Header File
-#include "ros_tutorials_topic/MsgTutorial.h"  // MsgTutorial Message File Header. The header file is automatically created when building the package.
+#include "ros/ros.h"                          // ROSの基本的なヘッダーファイル
+#include "ros_tutorials_topic/MsgTutorial.h"  // MsgTutorial.msgファイルをビルドして自動生成されるヘッダーファイル
 
-// Message callback function. This is a function is called when a topic
-// message named 'ros_tutorial_msg' is received. As an input message,
-// the 'MsgTutorial' message of the 'ros_tutorials_topic' package is received.
+// メッセージのコールバック関数
+// ros_tutorial_msgを受信した時に動作する
 void msgCallback(const ros_tutorials_topic::MsgTutorial::ConstPtr& msg)
 {
-  ROS_INFO("recieve msg = %d", msg->stamp.sec);   // Prints the 'stamp.sec' message
-  ROS_INFO("recieve msg = %d", msg->stamp.nsec);  // Prints the 'stamp.nsec' message
-  ROS_INFO("recieve msg = %d", msg->data);        // Prints the 'data' message
+  ROS_INFO("recieve msg = %d", msg->stamp.sec);   // stamp.secメッセージを表示する
+  ROS_INFO("recieve msg = %d", msg->stamp.nsec);  // stamp.nsecメッセージを表示する
+  ROS_INFO("recieve msg = %d", msg->data);        // dataメッセージを表示する
 }
 
-int main(int argc, char **argv)                         // Node Main Function
+int main(int argc, char **argv)                         // ノードのメイン関数
 {
-  ros::init(argc, argv, "topic_subscriber");            // Initializes Node Name
+  ros::init(argc, argv, "topic_subscriber");            // ノード名の初期化
 
-  ros::NodeHandle nh;                                   // Node handle declaration for communication with ROS system
+  ros::NodeHandle nh;                                   // ROSシステムとの通信を行うためのノードハンドルの宣言
 
-  // Declares subscriber. Create subscriber 'ros_tutorial_sub' using the 'MsgTutorial'
-  // message file from the 'ros_tutorials_topic' package. The topic name is
-  // 'ros_tutorial_msg' and the size of the publisher queue is set to 100.
+  // サブスクライバーの宣言
+  // トピック名：ros_tutorial_msg
+  // コールバック関数名：msgCallback
+  // サブスクライバー名：ros_tutorial_sub
+  // サブスクライバーキューサイズ：100
   ros::Subscriber ros_tutorial_sub = nh.subscribe("ros_tutorial_msg", 100, msgCallback);
 
-  // A function for calling a callback function, waiting for a message to be
-  // received, and executing a callback function when it is received.
+  // コールバック関数を呼び出すための関数
+  // メッセージの受信まで待機し、受信した場合コールバック関数を実行する
   ros::spin();
 
   return 0;
