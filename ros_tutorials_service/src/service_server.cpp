@@ -1,36 +1,36 @@
-#include "ros/ros.h"                          // ROS Default Header File
-#include "ros_tutorials_service/SrvTutorial.h"// SrvTutorial Service File Header (Automatically created after build)
+#include "ros/ros.h"                          // ROSの基本的なヘッダーファイル
+#include "ros_tutorials_service/SrvTutorial.h"// SrvTutorial.srvファイルをビルドして自動生成されるヘッダーファイル
 
-// The below process is performed when there is a service request
-// The service request is declared as 'req', and the service response is declared as 'res'
+// サービス要請はreq引数に、サービス応答はres引数に与えられる
 bool calculation(ros_tutorials_service::SrvTutorial::Request &req,
                  ros_tutorials_service::SrvTutorial::Response &res)
 {
-  // The service name is 'ros_tutorial_srv' and it will call 'calculation' function upon the service request.
+  // サービス要請を受けた時、aとbの値を足し、サービス応答のメッセージに設定する
   res.result = req.a + req.b;
 
-  // Displays 'a' and 'b' values used in the service request and
-  // the 'result' value corresponding to the service response
+  // サービス要請に使用したa,bの値を出力し、サービス応答の際に送信するresultの値を表示する
   ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
   ROS_INFO("sending back response: %ld", (long int)res.result);
 
   return true;
 }
 
-int main(int argc, char **argv)              // Node Main Function
+int main(int argc, char **argv)              // ノードのメイン関数
 {
-  ros::init(argc, argv, "service_server");   // Initializes Node Name
-  ros::NodeHandle nh;                        // Node handle declaration
+  ros::init(argc, argv, "service_server");   // ノード名の初期化
+  ros::NodeHandle nh;                        // ROSシステムとの通信を行うためのノードハンドルの宣言
 
-  // Declare service server 'ros_tutorials_service_server'
-  // using the 'SrvTutorial' service file in the 'ros_tutorials_service' package.
-  // The service name is 'ros_tutorial_srv' and it will call 'calculation' function
-  // upon the service request.
+  // サービスサーバーの宣言
+  // サービス名：ros_tutorial_srv
+  // サービスクライアント名：ros_tutorials_service_server
+  // コールバック関数名：calculation
   ros::ServiceServer ros_tutorials_service_server = nh.advertiseService("ros_tutorial_srv", calculation);
 
   ROS_INFO("ready srv server!");
 
-  ros::spin();    // Wait for the service request
+  // コールバック関数を呼び出すための関数
+  // サービスの受信まで待機し、受信した場合コールバック関数を実行する
+  ros::spin();
 
   return 0;
 }
