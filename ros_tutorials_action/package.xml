@@ -1,20 +1,37 @@
 <?xml version="1.0"?>
 <package>
+  <!-- パッケージ名を記述する -->
   <name>ros_tutorials_action</name>
+
+  <!-- パッケージのバージョンを記述する -->
   <version>0.1.0</version>
+
+  <!-- パッケージに対する簡単な説明を記述する -->
   <description>ROS turtorial package to learn the action</description>
+
+  <!-- パッケージのライセンスを記述する -->
   <license>BSD</license>
+
+  <!-- パッケージ管理者の名前やメールアドレスを記述する -->
   <author>Melonee Wise</author>
   <maintainer email="pyo@robotis.com">Yoonseok Pyo</maintainer>
+
+  <!-- パッケージを説明、管理するWebページのURLを記述する -->
   <url type="bugtracker">https://github.com/ROBOTIS-GIT/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ROBOTIS-GIT/ros_tutorials.git</url>
   <url type="website">http://www.robotis.com</url>
+
+  <!-- ビルドシステムの依存性について記述する -->
   <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- パッケージをビルドする時に依存するパッケージ名を記述する -->
   <build_depend>roscpp</build_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>actionlib_msgs</build_depend>
+
+  <!-- パッケージを実行する時に依存するパッケージ名を記述する -->
   <run_depend>roscpp</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>std_msgs</run_depend>
