@@ -12,7 +12,7 @@ add_service_files(FILES SrvTutorial.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
 # catkinビルドのオプションを記述する。
-# LIBRARIES オプションでros_tutorials_topicパッケージにあるライブラリを参照する。
+# LIBRARIES オプションでros_tutorials_serviceパッケージにあるライブラリを参照する。
 # CATKIN_DEPENDS オプションでstd_msgs,roscppへの依存関係を設定する。
 catkin_package(
   LIBRARIES ros_tutorials_service

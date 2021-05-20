@@ -16,7 +16,7 @@ int main(int argc, char **argv)               // ノードのメイン関数
   ros::NodeHandle nh;       // ROSシステムとの通信を行うためのノードハンドルの宣言
 
   // サービスクライアントの宣言
-  // サービス名：ros_turorials_service
+  // サービス名：ros_turorials_srv
   // サービス型：ros_tutorials_service::SrvTutorial
   // サービスクライアント名：ros_tutorials_service_client
   ros::ServiceClient ros_tutorials_service_client = nh.serviceClient<ros_tutorials_service::SrvTutorial>("ros_tutorial_srv");
